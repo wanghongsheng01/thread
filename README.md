@@ -281,12 +281,12 @@ int main(){
 	t1.join(); // a:130
 
 
-    // defer_lock
+        // defer_lock
 	std::thread t2(func2, a);
 	t2.join(); // a = 3000
     
 
-    // try_to_lock
+    	// try_to_lock
 	std::thread t3(func3, a);
 	t3.join(); // a = 30000
 	
