@@ -604,29 +604,29 @@ C++11 中，不需要为原子数据类型（需要互斥地进行访问的变�
 	 ```
 3. 执行算术加法 fech_add(用于添加算术加法的另一个参数， 用于强制执行值的内存顺序)
 	 ```.cpp
-	  #include <iostream>
-		#include <thread>
-		#include <atomic>
+	#include <iostream>
+	#include <thread>
+	#include <atomic>
 
-		std::atomic<long long> data;
+	std::atomic<long long> data;
 
-		void do_work() {
-			 data.fetch_add(1, std::memory_order_relaxed);
-		}
+	void do_work() {
+		 data.fetch_add(1, std::memory_order_relaxed);
+	}
 
-		int main() {
-			 std::thread th1(do_work);
-			 std::thread th2(do_work);
-			 std::thread th3(do_work);
-			 std::thread th4(do_work);
-			 std::thread th5(do_work);
-			 th1.join();
-			 th2.join();
-			 th3.join();
-			 th4.join();
-			 th5.join();
-			 std::cout << "Ans:" << data << '\n'; // Ans:5
-		}
+	int main() {
+		 std::thread th1(do_work);
+		 std::thread th2(do_work);
+		 std::thread th3(do_work);
+		 std::thread th4(do_work);
+		 std::thread th5(do_work);
+		 th1.join();
+		 th2.join();
+		 th3.join();
+		 th4.join();
+		 th5.join();
+		 std::cout << "Ans:" << data << '\n'; // Ans:5
+	}
 	 ```
 	
 
