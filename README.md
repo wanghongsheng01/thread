@@ -256,7 +256,8 @@ double async_func(double a, double b){
 // 同 double async_func(double a, double b){...}
 
 
-// 原子类型 std::atomic
+// 
+类型 std::atomic
 
 // 注意： g++ mutex.cpp -std=c++17 -Wall -o mutex
 int main(){
@@ -577,3 +578,56 @@ int main(){
 
 
 ```
+
+# 原子操作 atomic<br>
+C++11 中，不需要为原子数据类型（需要互斥地进行访问的变量）显式地声明互斥锁、调用加锁、解锁的 API，线程就能够对互斥量（原子数据）互斥地进行访问。
+
+
+## 定义原子类型<br>
+使用 atomic 类模版，定义需要的原子类型 `std::atomic<T> t`
+如， std::atomic<float> af {1.2f};
+
+
+## C++11 中的 memory_order 枚举值
+	 memory_order_relaxed 不对执行顺序做任何保证
+
+## 原子操作的行为
+1. 执行读 load
+	 ```.cpp
+	 std::atomic<int> a;
+	 int b = a.load(); // 相当于 b = a
+	 ```
+2. 执行写 store
+	 ```.cpp
+	 std::atomic<int> a;
+	 a.store(1); // 相当于 a = 1
+	 ```
+3. 执行算术加法 fech_add(用于添加算术加法的另一个参数， 用于强制执行值的内存顺序)
+	 ```.cpp
+	  #include <iostream>
+		#include <thread>
+		#include <atomic>
+
+		std::atomic<long long> data;
+
+		void do_work() {
+			 data.fetch_add(1, std::memory_order_relaxed);
+		}
+
+		int main() {
+			 std::thread th1(do_work);
+			 std::thread th2(do_work);
+			 std::thread th3(do_work);
+			 std::thread th4(do_work);
+			 std::thread th5(do_work);
+			 th1.join();
+			 th2.join();
+			 th3.join();
+			 th4.join();
+			 th5.join();
+			 std::cout << "Ans:" << data << '\n'; // Ans:5
+		}
+	 ```
+	
+
+
